@@ -43,3 +43,20 @@ urlpatterns = [
 Run `migrate`.
 
 The login button should be available under https://yoursite.com/getotp/login/start/.
+
+## Sending OTP
+To send OTP, we can use `send_otp()` function from `getotp.client` module:-
+
+```
+from getotp.client import send_otp
+
+otp = send_otp("email",
+                success_redirect_url=settings.GETOTP_LOGIN_SUCCESS_REDIRECT,
+                fail_redirect_url=settings.GETOTP_LOGIN_FAIL_REDIRECT,
+                callback_url=settings.GETOTP_CALLBACK,
+            )
+if otp.ok:
+    return redirect(otp.link)
+else:
+    print(otp.errors)
+```
