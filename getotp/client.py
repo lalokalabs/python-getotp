@@ -25,6 +25,8 @@ VERIFY_API_PARAMS = [
     "email",
     "hide",
     "metadata",
+    "embed",
+    "lang",
 ]
 VERIFY_API_RESP = ["otp_id", "link", "otp_secret"]
 VERIFY_API_DETAIL = ["otp_id", "status", "channels", "creation_time"]
@@ -122,7 +124,8 @@ class OTPResponse:
             return self.otp_id
 
 def send_otp(channels, success_redirect_url, fail_redirect_url,
-             callback_url=None, email="", phone_sms="", phone_voice="",
+             callback_url=None, email="", phone_sms="", phone_voice="", embed="compact",
+             lang="en",
              api_sid=settings.GETOTP_API_KEY, api_token=settings.GETOTP_AUTH_TOKEN):
     kwargs = {}
     client = OTPClient(
@@ -138,6 +141,8 @@ def send_otp(channels, success_redirect_url, fail_redirect_url,
         phone_sms=phone_sms,
         phone_voice=phone_voice,
         email=email,
+        embed=embed,
+        lang=lang,
     )
 
     if resp.errors is not None:
