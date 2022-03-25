@@ -5,6 +5,7 @@
 
 __author__ = "Surya Banerjee <surya@xoxzo.com>"
 
+import datetime
 
 from django.db import models
 from django.utils import timezone
@@ -24,4 +25,13 @@ class OTP(models.Model):
     metadata = models.CharField(max_length=255, default="")
 
     def __str__(self):
-        return f"{otp_id} {status} email: {email} phone_sms: {phone_sms} phone_voice: {phone_voice}"
+        return self.otp_id
+
+
+    def verify(self, age=60*10):
+        age = datetime.timedelta(seconds=age)
+        expiry_time = self.creation_time + age
+        if expiry_time > datetime.datetime.now():
+            return self.status == "verified"
+
+        return False
